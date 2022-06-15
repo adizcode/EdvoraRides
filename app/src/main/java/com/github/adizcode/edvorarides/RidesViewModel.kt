@@ -60,7 +60,7 @@ class RidesViewModel : ViewModel() {
 
     private suspend fun mapRidesToUserRides(listOfRides: List<Ride>, user: User): List<UserRide> {
         return withContext(Dispatchers.Default) {
-            listOfRides.map { UserRide.createUserRide(user, it) }
+            listOfRides.map { UserRide.createUserRide(user.station_code, it) }
         }
     }
 }
