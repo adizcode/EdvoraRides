@@ -1,4 +1,4 @@
-package com.github.adizcode.edvorarides
+package com.github.adizcode.edvorarides.data.model
 
 data class Ride(
     val city: String,

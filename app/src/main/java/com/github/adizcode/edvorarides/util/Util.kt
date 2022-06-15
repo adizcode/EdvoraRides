@@ -1,4 +1,4 @@
-package com.github.adizcode.edvorarides
+package com.github.adizcode.edvorarides.util
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -60,34 +60,25 @@ private fun findClosest(userStationCode: Int, stationPath: List<Int>): Int {
         return stationPath.last()
     }
 
-    if (stationPath.size > 2) {
-        // Binary Search
-        var low = 0
-        var high = stationPath.lastIndex
+    // Binary Search
+    var low = 0
+    var high = stationPath.lastIndex
 
-        while (low + 1 < high) {
-            val mid = low + (high - 1) / 2
-            if (stationPath[mid] == userStationCode) {
-                return stationPath[mid]
-            }
-
-            if (stationPath[mid] > userStationCode) {
-                high = mid
-            } else {
-                low = mid
-            }
+    while (low + 1 < high) {
+        val mid = low + (high - low) / 2
+        if (stationPath[mid] == userStationCode) {
+            return stationPath[mid]
         }
 
-        // Post processing
-        return if (abs(stationPath[low] - userStationCode) < abs(stationPath[high] - userStationCode))
-            stationPath[low]
-        else stationPath[high]
-
-
+        if (stationPath[mid] > userStationCode) {
+            high = mid
+        } else {
+            low = mid
+        }
     }
 
-    // Linear Search
-    return if (abs(stationPath[0] - userStationCode) < abs(stationPath[1] - userStationCode))
-        stationPath[0]
-    else stationPath[1]
+    // Post processing
+    return if (abs(stationPath[low] - userStationCode) < abs(stationPath[high] - userStationCode))
+        stationPath[low]
+    else stationPath[high]
 }

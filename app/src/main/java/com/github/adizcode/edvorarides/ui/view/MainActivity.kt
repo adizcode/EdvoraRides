@@ -1,7 +1,6 @@
-package com.github.adizcode.edvorarides
+package com.github.adizcode.edvorarides.ui.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -11,12 +10,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -42,16 +41,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.github.adizcode.edvorarides.data.model.User
+import com.github.adizcode.edvorarides.data.model.UserRide
 import com.github.adizcode.edvorarides.ui.theme.AppBarBlack
+import com.github.adizcode.edvorarides.ui.theme.ButtonGray
 import com.github.adizcode.edvorarides.ui.theme.EdvoraRidesTheme
 import com.github.adizcode.edvorarides.ui.theme.Gray
 import com.github.adizcode.edvorarides.ui.theme.LightBlack
 import com.github.adizcode.edvorarides.ui.theme.LightGray
+import com.github.adizcode.edvorarides.ui.viewmodel.UserRidesViewModel
 
 class MainActivity : ComponentActivity() {
-    private val viewModel by viewModels<RidesViewModel>()
+    private val viewModel by viewModels<UserRidesViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,7 +81,9 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     topBar = {
                         TopAppBar(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(70.dp),
                             backgroundColor = AppBarBlack,
                             contentColor = Color.White
                         ) {
@@ -87,8 +94,11 @@ class MainActivity : ComponentActivity() {
                             ) {
                                 Text(
                                     "Edvora",
-                                    style = MaterialTheme.typography.h4,
-                                    modifier = Modifier.padding(5.dp)
+                                    style = MaterialTheme.typography.h4.copy(
+                                        color = Color.White,
+                                        fontWeight = FontWeight.Bold
+                                    ),
+                                    modifier = Modifier.padding(8.dp)
                                 )
                                 UserDetails(user = user, modifier = Modifier.padding(8.dp))
                             }
@@ -108,33 +118,42 @@ class MainActivity : ComponentActivity() {
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier.weight(0.75f)
                             ) {
-                                Text("Rides:", modifier = Modifier.padding(start = 4.dp))
-                                MyTextButton(onClick = {
-                                    selectedCategory = "Nearest"
-                                }) {
-                                    Text("Nearest")
-                                }
-                                MyTextButton(onClick = {
-                                    selectedCategory = "Upcoming"
-                                }) {
-                                    Text("Upcoming (${upcomingRides.size})")
-                                }
-                                MyTextButton(onClick = {
-                                    selectedCategory = "Past"
-                                }) {
-                                    Text("Past (${pastRides.size})")
-                                }
+                                MyTextButton(
+                                    onClick = {
+                                        selectedCategory = "All"
+                                    }, text = "Rides:",
+                                    isSelected = selectedCategory == "All"
+                                )
+                                MyTextButton(
+                                    onClick = {
+                                        selectedCategory = "Nearest"
+                                    }, text = "Nearest",
+                                    isSelected = selectedCategory == "Nearest"
+                                )
+                                MyTextButton(
+                                    onClick = {
+                                        selectedCategory = "Upcoming"
+                                    },
+                                    text = "Upcoming (${upcomingRides.size})",
+                                    isSelected = selectedCategory == "Upcoming",
+                                )
+                                MyTextButton(
+                                    onClick = {
+                                        selectedCategory = "Past"
+                                    },
+                                    text = "Past (${pastRides.size})",
+                                    isSelected = selectedCategory == "Past"
+                                )
                             }
-                            MyTextButton(
+                            TextButton(
                                 onClick = { /*TODO*/ },
-                                modifier = Modifier.weight(0.25f)
+                                colors = ButtonDefaults.textButtonColors(contentColor = Color.White),
                             ) {
                                 Icon(Icons.Filled.Sort, null)
                                 Text("Filter")
                             }
                         }
                         Spacer(modifier = Modifier.height(5.dp))
-                        Text("Current list size = ${currentList.size}")
                         RidesList(currentList)
                     }
                 }
@@ -152,12 +171,21 @@ fun UserDetails(user: User?, modifier: Modifier = Modifier) {
             .padding(5.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(user?.name ?: "User")
+        Text(
+            user?.name ?: "User",
+            style = MaterialTheme.typography.body1.copy(
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.5.sp,
+            )
+        )
         Spacer(Modifier.width(10.dp))
         AsyncImage(
             model = user?.url,
             contentDescription = "User's image",
-            modifier = Modifier.clip(CircleShape),
+            modifier = Modifier
+                .clip(CircleShape)
+                .size(35.dp),
         )
     }
 }
@@ -166,18 +194,26 @@ fun UserDetails(user: User?, modifier: Modifier = Modifier) {
 fun MyTextButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    content: @Composable (RowScope.() -> Unit),
+    text: String,
+    isSelected: Boolean,
 ) {
     TextButton(
         onClick = onClick,
         colors = ButtonDefaults.textButtonColors(contentColor = Color.White),
         modifier = modifier,
-    ) { content() }
+    ) {
+        Text(
+            text,
+            style = MaterialTheme.typography.button.copy(
+                color = if (isSelected) Color.White else ButtonGray,
+                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+            )
+        )
+    }
 }
 
 @Composable
 fun RidesList(listOfRides: List<UserRide>) {
-    Log.d("Testing", "List of UserRides in Composable = $listOfRides")
     LazyColumn {
         items(listOfRides) { RideCard(it) }
     }
