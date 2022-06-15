@@ -1,7 +1,6 @@
 package com.github.adizcode.edvorarides.ui.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -42,11 +40,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.github.adizcode.edvorarides.data.model.UserRide
 import com.github.adizcode.edvorarides.data.model.User
+import com.github.adizcode.edvorarides.data.model.UserRide
 import com.github.adizcode.edvorarides.ui.theme.AppBarBlack
+import com.github.adizcode.edvorarides.ui.theme.ButtonGray
 import com.github.adizcode.edvorarides.ui.theme.EdvoraRidesTheme
 import com.github.adizcode.edvorarides.ui.theme.Gray
 import com.github.adizcode.edvorarides.ui.theme.LightBlack
@@ -111,33 +111,42 @@ class MainActivity : ComponentActivity() {
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier.weight(0.75f)
                             ) {
-                                Text("Rides:", modifier = Modifier.padding(start = 4.dp))
-                                MyTextButton(onClick = {
-                                    selectedCategory = "Nearest"
-                                }) {
-                                    Text("Nearest")
-                                }
-                                MyTextButton(onClick = {
-                                    selectedCategory = "Upcoming"
-                                }) {
-                                    Text("Upcoming (${upcomingRides.size})")
-                                }
-                                MyTextButton(onClick = {
-                                    selectedCategory = "Past"
-                                }) {
-                                    Text("Past (${pastRides.size})")
-                                }
+                                MyTextButton(
+                                    onClick = {
+                                        selectedCategory = "All"
+                                    }, text = "Rides:",
+                                    isSelected = selectedCategory == "All"
+                                )
+                                MyTextButton(
+                                    onClick = {
+                                        selectedCategory = "Nearest"
+                                    }, text = "Nearest",
+                                    isSelected = selectedCategory == "Nearest"
+                                )
+                                MyTextButton(
+                                    onClick = {
+                                        selectedCategory = "Upcoming"
+                                    },
+                                    text = "Upcoming (${upcomingRides.size})",
+                                    isSelected = selectedCategory == "Upcoming",
+                                )
+                                MyTextButton(
+                                    onClick = {
+                                        selectedCategory = "Past"
+                                    },
+                                    text = "Past (${pastRides.size})",
+                                    isSelected = selectedCategory == "Past"
+                                )
                             }
-                            MyTextButton(
+                            TextButton(
                                 onClick = { /*TODO*/ },
-                                modifier = Modifier.weight(0.25f)
+                                colors = ButtonDefaults.textButtonColors(contentColor = Color.White),
                             ) {
                                 Icon(Icons.Filled.Sort, null)
                                 Text("Filter")
                             }
                         }
                         Spacer(modifier = Modifier.height(5.dp))
-                        Text("Current list size = ${currentList.size}")
                         RidesList(currentList)
                     }
                 }
@@ -169,13 +178,22 @@ fun UserDetails(user: User?, modifier: Modifier = Modifier) {
 fun MyTextButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    content: @Composable (RowScope.() -> Unit),
+    text: String,
+    isSelected: Boolean,
 ) {
     TextButton(
         onClick = onClick,
         colors = ButtonDefaults.textButtonColors(contentColor = Color.White),
         modifier = modifier,
-    ) { content() }
+    ) {
+        Text(
+            text,
+            style = MaterialTheme.typography.button.copy(
+                color = if (isSelected) Color.White else ButtonGray,
+                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+            )
+        )
+    }
 }
 
 @Composable

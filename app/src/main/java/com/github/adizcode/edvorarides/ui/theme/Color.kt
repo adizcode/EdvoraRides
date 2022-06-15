@@ -9,5 +9,6 @@ val Teal200 = Color(0xFF03DAC5)
 
 val Gray = Color(0xFF292929)
 val LightGray = Color(0xFFCFCFCF)
+val ButtonGray = Color(0xFFD0CBCB)
 val AppBarBlack = Color(0xFF101010)
 val LightBlack = Color(0xFF171717)
