@@ -66,7 +66,7 @@ private fun findClosest(userStationCode: Int, stationPath: List<Int>): Int {
         var high = stationPath.lastIndex
 
         while (low + 1 < high) {
-            val mid = low + (high - 1) / 2
+            val mid = low + (high - low) / 2
             if (stationPath[mid] == userStationCode) {
                 return stationPath[mid]
             }
@@ -82,8 +82,6 @@ private fun findClosest(userStationCode: Int, stationPath: List<Int>): Int {
         return if (abs(stationPath[low] - userStationCode) < abs(stationPath[high] - userStationCode))
             stationPath[low]
         else stationPath[high]
-
-
     }
 
     // Linear Search

@@ -1,6 +1,5 @@
 package com.github.adizcode.edvorarides
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -54,15 +53,8 @@ class RidesViewModel : ViewModel() {
 
             val listOfUserRides = mapRidesToUserRides(listOfRides, userInstance)
 
-            Log.d("Testing", "List of user rides in ViewModel = $listOfUserRides")
             _user.value = userInstance
             _rides.value = listOfUserRides
-
-            // TODO: This works for a single call
-            // Maybe the load is too heavy for a mobile device??
-            // computeDistance(userInstance.station_code, listOfUserRides[0].ride.station_path)
-
-            Log.d("Testing", "Value posted!!!!")
         }
     }
 
