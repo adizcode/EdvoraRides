@@ -180,7 +180,6 @@ fun MyTextButton(
 
 @Composable
 fun RidesList(listOfRides: List<UserRide>) {
-    Log.d("Testing", "List of UserRides in Composable = $listOfRides")
     LazyColumn {
         items(listOfRides) { RideCard(it) }
     }
