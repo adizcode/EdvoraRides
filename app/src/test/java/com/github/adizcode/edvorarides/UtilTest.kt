@@ -1,5 +1,6 @@
 package com.github.adizcode.edvorarides
 
+import com.github.adizcode.edvorarides.util.processDate
 import org.junit.Test
 
 class UtilTest {
@@ -17,7 +18,8 @@ class UtilTest {
         val userStationCode = 99
         val stationPath = listOf(10, 15, 99, 200, 9000)
 
-        val distance = computeDistance(userStationCode, stationPath)
+        val distance =
+            com.github.adizcode.edvorarides.util.computeDistance(userStationCode, stationPath)
 
         assert(distance == 0)
     }

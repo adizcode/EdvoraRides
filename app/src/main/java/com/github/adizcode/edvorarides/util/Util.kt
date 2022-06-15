@@ -1,4 +1,4 @@
-package com.github.adizcode.edvorarides
+package com.github.adizcode.edvorarides.util
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter

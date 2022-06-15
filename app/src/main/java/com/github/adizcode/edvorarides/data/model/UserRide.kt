@@ -1,4 +1,7 @@
-package com.github.adizcode.edvorarides
+package com.github.adizcode.edvorarides.data.model
+
+import com.github.adizcode.edvorarides.util.computeDistance
+import com.github.adizcode.edvorarides.util.processDate
 
 class UserRide private constructor(
     val ride: Ride,

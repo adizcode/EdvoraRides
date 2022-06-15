@@ -1,16 +1,24 @@
-package com.github.adizcode.edvorarides
+package com.github.adizcode.edvorarides.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.adizcode.edvorarides.data.model.UserRide
+import com.github.adizcode.edvorarides.data.model.Ride
+import com.github.adizcode.edvorarides.data.repositories.RidesRepository
+import com.github.adizcode.edvorarides.data.model.User
+import com.github.adizcode.edvorarides.data.repositories.UserRepository
+import com.github.adizcode.edvorarides.util.isFutureDate
+import com.github.adizcode.edvorarides.util.isPastDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class RidesViewModel : ViewModel() {
-    private val repository = RidesRepository()
+class UserRidesViewModel : ViewModel() {
+    private val userRepository = UserRepository()
+    private val ridesRepository = RidesRepository()
 
     private val _rides: MutableLiveData<List<UserRide>> = MutableLiveData(emptyList())
     val rides: LiveData<List<UserRide>>
@@ -47,9 +55,9 @@ class RidesViewModel : ViewModel() {
     private fun initUserAndRides() {
 
         viewModelScope.launch {
-            val userInstance = repository.getUser()
+            val userInstance = userRepository.getUser()
             val listOfRides =
-                repository.getRides()
+                ridesRepository.getRides()
 
             val listOfUserRides = mapRidesToUserRides(listOfRides, userInstance)
 

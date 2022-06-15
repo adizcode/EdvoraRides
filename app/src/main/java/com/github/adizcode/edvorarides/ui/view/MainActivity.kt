@@ -1,4 +1,4 @@
-package com.github.adizcode.edvorarides
+package com.github.adizcode.edvorarides.ui.view
 
 import android.os.Bundle
 import android.util.Log
@@ -44,14 +44,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.github.adizcode.edvorarides.data.model.UserRide
+import com.github.adizcode.edvorarides.data.model.User
 import com.github.adizcode.edvorarides.ui.theme.AppBarBlack
 import com.github.adizcode.edvorarides.ui.theme.EdvoraRidesTheme
 import com.github.adizcode.edvorarides.ui.theme.Gray
 import com.github.adizcode.edvorarides.ui.theme.LightBlack
 import com.github.adizcode.edvorarides.ui.theme.LightGray
+import com.github.adizcode.edvorarides.ui.viewmodel.UserRidesViewModel
 
 class MainActivity : ComponentActivity() {
-    private val viewModel by viewModels<RidesViewModel>()
+    private val viewModel by viewModels<UserRidesViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
