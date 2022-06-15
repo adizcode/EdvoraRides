@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -42,6 +43,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.github.adizcode.edvorarides.data.model.User
 import com.github.adizcode.edvorarides.data.model.UserRide
@@ -79,7 +81,9 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     topBar = {
                         TopAppBar(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(70.dp),
                             backgroundColor = AppBarBlack,
                             contentColor = Color.White
                         ) {
@@ -90,8 +94,11 @@ class MainActivity : ComponentActivity() {
                             ) {
                                 Text(
                                     "Edvora",
-                                    style = MaterialTheme.typography.h4,
-                                    modifier = Modifier.padding(5.dp)
+                                    style = MaterialTheme.typography.h4.copy(
+                                        color = Color.White,
+                                        fontWeight = FontWeight.Bold
+                                    ),
+                                    modifier = Modifier.padding(8.dp)
                                 )
                                 UserDetails(user = user, modifier = Modifier.padding(8.dp))
                             }
@@ -164,12 +171,21 @@ fun UserDetails(user: User?, modifier: Modifier = Modifier) {
             .padding(5.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(user?.name ?: "User")
+        Text(
+            user?.name ?: "User",
+            style = MaterialTheme.typography.body1.copy(
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.5.sp,
+            )
+        )
         Spacer(Modifier.width(10.dp))
         AsyncImage(
             model = user?.url,
             contentDescription = "User's image",
-            modifier = Modifier.clip(CircleShape),
+            modifier = Modifier
+                .clip(CircleShape)
+                .size(35.dp),
         )
     }
 }
